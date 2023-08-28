@@ -23,6 +23,8 @@ def authenticate(username, password, pwdb):
     if username in pwdb:
         if password == pwdb[username]:
             print("Successfully authenticated!")
+        else:
+            print("Wrong Password")
 
 
 username, password = get_credentials()
