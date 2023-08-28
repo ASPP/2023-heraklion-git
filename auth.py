@@ -29,7 +29,12 @@ def authenticate(username, password, pwdb):
         write_pwdb(pwdb)
 
 def add_user(username, password, pwdb):
-    pwdb[username] = password
+    flag = input("Do you want to add a new user? y/n ")
+    if flag == "y":
+        pwdb[username] = password
+        print("User added correcly")
+    else:
+        print("User not added")
     return pwdb
 
 username, password = get_credentials()
