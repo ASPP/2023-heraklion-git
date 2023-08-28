@@ -4,10 +4,7 @@ import hashlib
 import os
 PATH = "./pwdb.json"
 max_tries = 3
-def get_credentials():
-    username = input("Username: ")
-    password = getpass.getpass("Password: ")
-    return username, password
+
 
 
 def get_username():
@@ -33,7 +30,7 @@ def authenticate(username, pwdb):
             print("Successfully authenticated!")
             break
         else:
-            print("Wrong Password,try again")
+            print("Wrong password, try again")
 
 def hash(username,password):
     salted = username + password
@@ -55,10 +52,11 @@ def database_exists():
             d = json.load(f)
     return d
 
-database = database_exists()
 
-username = get_username()
 def run():
+    database = database_exists()
+    username = get_username()
+
     if username in database:
         authenticate(username,database)
     else:
