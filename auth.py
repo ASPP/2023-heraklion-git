@@ -1,5 +1,6 @@
 import json
 import getpass
+import hashlib
 
 PATH = "./pwdb.json"
 
@@ -20,7 +21,7 @@ def write_pwdb(pwdb):
 
 def authenticate(username, password, pwdb):
     if username in pwdb:
-        if password == pwdb[username]:
+        if _hash(password) == pwdb[username]:
             print("Successfully authenticated!")
         else:
             print("Wrong Password")
@@ -29,8 +30,13 @@ def authenticate(username, password, pwdb):
         write_pwdb(pwdb)
 
 def add_user(username, password, pwdb):
-    pwdb[username] = password
+    pwdb[username] = _hash(password)
     return pwdb
+
+
+def _hash(password: str) -> str:
+    return hashlib.sha256(password.encode("utf-8")).hexdigest()
+
 
 username, password = get_credentials()
 pwdb = read_pwdb()
