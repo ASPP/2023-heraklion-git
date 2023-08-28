@@ -25,7 +25,7 @@ def write_pwdb(pwdb):
 
 
 def authenticate(username, password, pwdb):
-    print(pwdb)
+    
     if username in pwdb:
         if password == pwdb[username]:
             print("Successfully authenticated!")
