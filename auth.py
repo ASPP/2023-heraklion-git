@@ -21,7 +21,7 @@ def write_pwdb(pwdb):
 
 def authenticate(username, password, pwdb):
     if username in pwdb:
-        if _hash(password) == pwdb[username]:
+        if pwhash(password) == pwdb[username]:
             print("Successfully authenticated!")
         else:
             print("Wrong Password")
@@ -30,11 +30,11 @@ def authenticate(username, password, pwdb):
         write_pwdb(pwdb)
 
 def add_user(username, password, pwdb):
-    pwdb[username] = _hash(password)
+    pwdb[username] = pwhash(password)
     return pwdb
 
 
-def _hash(password: str) -> str:
+def pwhash(password: str) -> str:
     return hashlib.sha256(password.encode("utf-8")).hexdigest()
 
 
