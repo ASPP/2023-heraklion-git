@@ -31,7 +31,7 @@ def authenticate(username, password, pwdb):
         write_pwdb(pwdb)
 
 def add_user(username, password, pwdb):
-    salt_val = str(random.randint(0, 2**32))
+    salt_val = get_salt()
     hash = pwhash(password,salt_val)
     pwdb[username] = {
         "salt": salt_val,
@@ -42,6 +42,10 @@ def add_user(username, password, pwdb):
 
 def pwhash(password: str, salt: str) -> str:
     return hashlib.sha256((password+salt).encode("utf-8")).hexdigest()
+
+
+def get_salt() -> str:
+    return str(random.randint(0, 2**32))
 
 
 username, password = get_credentials()
