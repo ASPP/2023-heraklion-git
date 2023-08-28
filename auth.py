@@ -17,7 +17,6 @@ def write_pwdb(pwdb):
     with open(PATH, "w") as f:
         json.dump(pwdb, f)
 
-
 def authenticate(username, password, pwdb):
     if username in pwdb:
         if password == pwdb[username]:
@@ -25,8 +24,11 @@ def authenticate(username, password, pwdb):
         else:
             print("Wrong Password")
     else:
-        pwdb = add_user(username, password, pwdb)
-        write_pwdb(pwdb)
+        add_ans = input("This username is not yet registered. Do you want to create a new account? (y/n)")
+        
+        if add_ans == "y":
+            pwdb = add_user(username, password, pwdb)
+            write_pwdb(pwdb)
 
 def add_user(username, password, pwdb):
     pwdb[username] = password
