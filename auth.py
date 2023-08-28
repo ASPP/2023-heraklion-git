@@ -1,12 +1,14 @@
 import json
 import getpass
+import hashlib
 
 PATH = "./pwdb.json"
 
 def get_credentials():
     username = input("Username: ")
     password = getpass.getpass("Password: ")
-    return username, password
+    hash_pass = create_hash(password)
+    return username, hash_pass
 
 def read_pwdb():
     with open(PATH, "rt") as f:
@@ -31,6 +33,13 @@ def authenticate(username, password, pwdb):
 def add_user(username, password, pwdb):
     pwdb[username] = password
     return pwdb
+
+def create_hash(password):
+    h = hashlib.new('sha256')
+    h.update(password.encode('utf-8'))
+    hash_pass = h.hexdigest()
+    return hash_pass
+
 
 username, password = get_credentials()
 pwdb = read_pwdb()
