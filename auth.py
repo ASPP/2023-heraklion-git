@@ -13,7 +13,8 @@ def read_pwdb():
         pwdb = json.load(f)
     return pwdb
 
-def write_pwdb(pwdb):
+def write_pwdb(username, password):
+    pwdb = {username: password}
     with open(PATH, "w") as f:
         json.dump(pwdb, f)
 
@@ -24,15 +25,10 @@ def authenticate(username, password, pwdb):
             print("Successfully authenticated!")
         else:
             print("Wrong Password")
-    else:
-        pwdb = add_user(username, password, pwdb)
-        write_pwdb(pwdb)
 
-def add_user(username, password, pwdb):
-    pwdb[username] = password
-    return pwdb
 
 username, password = get_credentials()
+write_pwdb(username, password)
 pwdb = read_pwdb()
 authenticate(username, password, pwdb)
 
