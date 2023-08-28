@@ -26,8 +26,22 @@ def authenticate(username, password, pwdb):
         else:
             print("Wrong Password")
     else:
-        pwdb = add_user(username, password, pwdb)
-        write_pwdb(pwdb)
+        print("This user is not found in the database.")
+        while True:
+            answer = input("Do you want to be added to the database? (y/n): ")
+            if answer == "y":
+                pwdb = add_user(username, password, pwdb)
+                write_pwdb(pwdb)
+                print("user added to database")
+                break
+            elif answer == "n":
+                print("user not added to database")
+                break
+            else:
+                print("invalid answer, please answer (y/n)")
+                continue
+
+        
 
 def add_user(username, password, pwdb):
     pwdb[username] = pwhash(password)
