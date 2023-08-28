@@ -9,8 +9,11 @@ def get_credentials():
     return username, password
 
 def read_pwdb():
-    with open(PATH, "rt") as f:
-        pwdb = json.load(f)
+    try:
+        with open(PATH, "rt") as f:
+            pwdb = json.load(f)
+    except FileNotFoundError:
+        pwdb = {}
     return pwdb
 
 def write_pwdb(pwdb):
