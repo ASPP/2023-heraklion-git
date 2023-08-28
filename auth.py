@@ -25,8 +25,14 @@ def authenticate(username, password, pwdb):
         else:
             print("Wrong Password")
     else:
-        pwdb = add_user(username, password, pwdb)
-        write_pwdb(pwdb)
+        add_new_user = input("Add new user? [y/n]").lower()
+        if add_new_user=="y":
+            pwdb = add_user(username, password, pwdb)
+            write_pwdb(pwdb)
+        elif add_new_user=="n":
+            pass
+        else:
+            print("Please enter y or n, idiot :)")
 
 def add_user(username, password, pwdb):
     pwdb[username] = password
@@ -35,4 +41,3 @@ def add_user(username, password, pwdb):
 username, password = get_credentials()
 pwdb = read_pwdb()
 authenticate(username, password, pwdb)
-
