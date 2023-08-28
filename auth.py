@@ -1,7 +1,12 @@
 import json
 import getpass
+import os
 
 PATH = "./pwdb.json"
+if not os.path.isfile(PATH):
+    f = open(PATH, "w")   
+    f.write("{}")
+    f.close()
 
 def get_credentials():
     username = input("Username: ")
