@@ -1,12 +1,21 @@
 import json
 import getpass
-
+import hashlib
+import os
 PATH = "./pwdb.json"
-
+max_tries = 3
 def get_credentials():
     username = input("Username: ")
     password = getpass.getpass("Password: ")
     return username, password
+
+
+def get_username():
+    return input("Username: ")
+
+def get_password():
+    return getpass.getpass("Password: ")
+
 
 def read_pwdb():
     with open(PATH, "rt") as f:
@@ -18,21 +27,55 @@ def write_pwdb(pwdb):
         json.dump(pwdb, f)
 
 
-def authenticate(username, password, pwdb):
-    if username in pwdb:
-        if password == pwdb[username]:
+def authenticate(username, pwdb):
+    for i in range(max_tries):
+        if hash(username,get_password()) == pwdb[username]:
             print("Successfully authenticated!")
+            break
         else:
-            print("Wrong Password")
-    else:
-        pwdb = add_user(username, password, pwdb)
-        write_pwdb(pwdb)
+            print("Wrong Password,try again")
+
+def hash(username,password):
+    salted = username + password
+    return hashlib.md5(salted.encode()).hexdigest()
+
 
 def add_user(username, password, pwdb):
     pwdb[username] = password
     return pwdb
 
-username, password = get_credentials()
-pwdb = read_pwdb()
-authenticate(username, password, pwdb)
 
+def database_exists():
+    if not os.path.exists(PATH):
+        d = dict()
+        with open(PATH,'w') as f:
+            json.dump(d,f)
+    else:
+        with open(PATH,'r+') as f:
+            d = json.load(f)
+    return d
+
+database = database_exists()
+
+username = get_username()
+def run():
+    if username in database:
+        authenticate(username,database)
+    else:
+        if input('Username does not exist create new account?[Y,N]') == 'Y':
+            p = hash(username,get_password())
+            print('repeat new password')
+            i = 0
+            for i in range(10):
+                if hash(username,get_password()) == p:
+                    database[username] = p
+                    write_pwdb(database)
+                    break
+                else:
+                    print("wrong password, work on your shortterm memory please!")
+
+    
+
+
+if __name__ == "__main__":
+    run()
