@@ -1,6 +1,7 @@
 import json
 import getpass
 import hashlib
+import crypt
 
 PATH = "./pwdb.json"
 
@@ -35,9 +36,10 @@ def add_user(username, password, pwdb):
     return pwdb
 
 def create_hash(password):
-    h = hashlib.new('sha256')
-    h.update(password.encode('utf-8'))
-    hash_pass = h.hexdigest()
+    #h = hashlib.new('sha256')
+    #h.update(password.encode('utf-8'))
+    #hash_pass = h.hexdigest()
+    hash_pass = crypt.crypt(password, salt=crypt.mksalt())
     return hash_pass
 
 
